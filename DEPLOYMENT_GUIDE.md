@@ -20,16 +20,14 @@ Four GitHub Actions workflows are provided under `.github/workflows/`:
 
 ## Step 1: Git Repository Setup & Push to GitHub
 
-1. Create a **new public GitHub repository** (e.g., `cd12354-Movie-Picture-Pipeline` or `movie-picture-pipeline`).
-   > *Note: Public repositories receive free GitHub Actions compute minutes.*
+1. The repository has been created on GitHub:
+   - **Repository URL**: [https://github.com/Asmit1709/mapple-movie](https://github.com/Asmit1709/mapple-movie)
 
-2. Initialize / update git remote and push your code:
+2. Your local repository is already synchronized with remote `origin`:
    ```bash
-   git add .
-   git commit -m "feat: implement GitHub Actions CI/CD pipelines for frontend and backend"
-   git branch -M main
-   git remote set-url origin https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>.git
-   git push -u origin main
+   git remote -v
+   # origin  https://github.com/Asmit1709/mapple-movie.git (fetch)
+   # origin  https://github.com/Asmit1709/mapple-movie.git (push)
    ```
 
 ---
