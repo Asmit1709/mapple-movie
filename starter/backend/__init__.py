@@ -1,3 +1,7 @@
+"""
+Movie Picture Backend API Application.
+Provides RESTful endpoints for retrieving movie catalog data.
+"""
 import os
 from flask import Flask
 from flask_cors import CORS
