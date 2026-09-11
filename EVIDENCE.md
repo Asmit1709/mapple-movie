@@ -8,7 +8,7 @@ This document provides proof and verification for the Udacity CI/CD pipeline pro
 
 ### 1. Complete Frontend CI Build Job
 - **Workflow File**: [`.github/workflows/frontend-ci.yml`](file:///.github/workflows/frontend-ci.yml)
-- **Resolved Feedback**: Added the required build steps before the container packaging:
+- **Resolved Feedback**: Added all required build steps before Docker packaging:
   1. `actions/setup-node@v4` (Node.js 18.x with npm caching)
   2. `npm ci` (clean dependency installation)
   3. `npm run build` (production React bundle compilation)
@@ -24,51 +24,51 @@ This document provides proof and verification for the Udacity CI/CD pipeline pro
 
 ---
 
-## Microservice Access Proof (Option 2)
+## Pipeline Evidence & Proof Screenshots
 
-### 1. Frontend Application via LoadBalancer DNS
-- **URL**: `http://a757367093080-frontend-lb-1849204921.us-east-1.elb.amazonaws.com`
-- Accessible via Kubernetes LoadBalancer service on port 80 routing to port 3000.
-- Displays the Movie Picture catalog (`Movie List`) and interactive `Movie Details`.
+### 1. GitHub Repository
+Overview of the project repository with GitHub Actions workflows in `.github/workflows`.
 
-![Frontend Application](screenshots/01_frontend_loadbalancer_access.png)
+![01_Repository](screenshots/01_Repository.png)
 
 ---
 
-### 2. Backend API via LoadBalancer DNS
-- **URL**: `http://a757367093080-backend-lb-2940185923.us-east-1.elb.amazonaws.com/movies`
-- Accessible via Kubernetes LoadBalancer service on port 80 routing to port 5000.
-- Returns HTTP 200 with the JSON movie catalog payload.
+### 2. Repository Secrets Configuration
+GitHub Actions secrets configured for AWS authentication (`AWS_ACCESS_KEY_ID`, `AWS_REGION`, `AWS_SECRET_ACCESS_KEY`).
 
-![Backend API](screenshots/02_backend_api_loadbalancer_access.png)
+![02_Repository_Secrets](screenshots/02_Repository_Secrets.png)
 
 ---
 
-### 3. Kubernetes Cluster State (`kubectl get all`)
-- Displays all active Pods, LoadBalancer Services, Deployments, and ReplicaSets in the `default` namespace.
+### 3. Backend CI Workflow Runs
+Shows the workflow runs for Backend CI, including both pull request and manual triggers.
 
-![Kubectl Get All](screenshots/03_kubectl_get_all.png)
-
----
-
-### 4. Kubernetes Deployments (`kubectl describe deploy`)
-- Detailed specifications and rollout events for both `frontend` and `backend` deployments.
-- Shows tagged container images pulled from AWS ECR.
-
-![Kubectl Describe Deploy](screenshots/04_kubectl_describe_deploy.png)
+![03_Backend_CI_Workflow](screenshots/03_Backend_CI_Workflow.png)
 
 ---
 
-### 5. Amazon ECR Frontend Repository
-- Shows repository `757367093080.dkr.ecr.us-east-1.amazonaws.com/frontend` in `us-east-1`.
-- Contains tags: `latest`, commit SHA `6099a89`, and previous deployment `de4eb36`.
+### 4. Backend CI Execution Success
+Detailed run graph showing all jobs (`Lint Backend`, `Test Backend`, `Build Backend Docker Image`) passing successfully.
 
-![AWS ECR Frontend](screenshots/05_aws_ecr_frontend_repository.png)
+![04_Backend_CI_Success](screenshots/04_Backend_CI_Success.png)
 
 ---
 
-### 6. Amazon ECR Backend Repository
-- Shows repository `757367093080.dkr.ecr.us-east-1.amazonaws.com/backend` in `us-east-1`.
-- Contains tags: `latest`, commit SHA `c368bc2`, and previous deployment `cfa2d60`.
+### 5. Backend CD Workflow Success
+Detailed run graph showing all CD stages (`Lint Backend`, `Test Backend`, `Build & Push Backend Image to ECR`, `Deploy Backend to EKS`) passing successfully.
 
-![AWS ECR Backend](screenshots/06_aws_ecr_backend_repository.png)
+![05_Backend_CD_Workflow](screenshots/05_Backend_CD_Workflow.png)
+
+---
+
+### 6. Frontend CI Execution Success
+Detailed run graph showing all Frontend CI jobs (`Lint Frontend`, `Test Frontend`, `Build Frontend Application & Docker Image`) passing successfully with complete build steps.
+
+![06_Frontend_CI](screenshots/06_Frontend_CI.png)
+
+---
+
+### 7. Frontend CD Workflow Success
+Detailed run graph showing all Frontend CD stages (`Lint Frontend`, `Test Frontend`, `Build & Push Frontend Image to ECR`, `Deploy Frontend to EKS`) passing successfully.
+
+![07_Frontend_CD](screenshots/07_Frontend_CD.png)
