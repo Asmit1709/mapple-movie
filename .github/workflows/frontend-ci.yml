@@ -68,7 +68,7 @@ jobs:
         run: echo "::error::Frontend test suite failed."
 
   build:
-    name: Build Frontend Docker Image
+    name: Build Frontend Application & Docker Image
     runs-on: ubuntu-latest
     needs: [lint, test]
     defaults:
@@ -78,6 +78,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: starter/frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend application
+        env:
+          REACT_APP_MOVIE_API_URL: http://localhost:5000
+        run: npm run build
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -93,4 +108,4 @@ jobs:
 
       - name: Notify on failure
         if: failure()
-        run: echo "::error::Frontend Docker build failed."
+        run: echo "::error::Frontend build job failed."
